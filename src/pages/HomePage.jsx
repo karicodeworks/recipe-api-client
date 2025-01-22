@@ -3,12 +3,13 @@ import { useEffect, useState } from 'react'
 
 const HomePage = () => {
   const [data, setData] = useState([])
+  const [error, setError] = useState([])
 
   useEffect(() => {
     axios
       .get('/api/v1/recipes')
       .then((response) => setData(response.data.recipes))
-      .catch((error) => console.log(error.message))
+      .catch((error) => setError(error.message))
   }, [])
 
   return (
@@ -30,6 +31,7 @@ const HomePage = () => {
           </div>
         </div>
       ))}
+      {error && <p className="text-red-500 text-xl italic">{error}</p>}
     </div>
   )
 }
