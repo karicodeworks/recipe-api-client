@@ -3,6 +3,7 @@ import NavBar from './components/NavBar'
 import HomePage from './pages/HomePage'
 import LoginPage from './pages/LoginPage'
 import DashboardPage from './pages/DashboardPage'
+import PrivateRoute from './utils/ProtectedRoutes'
 
 function App() {
   return (
@@ -11,7 +12,7 @@ function App() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<LoginPage />} />
-        <Route path="/dashboard" element={<DashboardPage />} />
+        <PrivateRoute path="/dashboard" element={<DashboardPage />} />
         <Route path="*" element={<h1>Page Not Found</h1>} />
       </Routes>
     </div>

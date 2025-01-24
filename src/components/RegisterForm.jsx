@@ -1,8 +1,7 @@
 import axios from 'axios'
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
 
-const RegisterForm = () => {
+const RegisterForm = ({ formToggle }) => {
   const [values, setValues] = useState({
     username: '',
     email: '',
@@ -10,9 +9,7 @@ const RegisterForm = () => {
     confirm_password: '',
   })
   const [loading, setLoading] = useState(false)
-  const [message, setMessage] = useState('')
   const [error, setError] = useState('')
-  const navigate = useNavigate()
 
   const handleChange = (e) => {
     setValues({ ...values, [e.target.name]: e.target.value })
@@ -37,9 +34,9 @@ const RegisterForm = () => {
       const newUser = { name, email, password }
       const { data } = await axios.post('/api/v1/auth/register', newUser)
       setValues({ username: '', email: '', password: '', confirm_password: '' })
-      setMessage(data.message)
+      alert(data.message)
       setLoading(false)
-      navigate('/login')
+      formToggle()
     } catch (error) {
       setError(error.response.data.message)
       setLoading(false)
@@ -53,7 +50,6 @@ const RegisterForm = () => {
       className="bg-gray-300 shadow-md rounded-b px-8 pt-6 pb-8"
     >
       <h1 className="font-bold text-2xl text-center mb-4">Login In</h1>
-      {message && <p className="text-red-500 text-xs italic">{message}</p>}
       <div className="mb-4">
         <label
           className="block text-gray-700 text-sm font-bold mb-2"
@@ -128,7 +124,7 @@ const RegisterForm = () => {
         </button>
         <a
           className="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800"
-          href="#"
+          onClick={formToggle}
         >
           Back to Login
         </a>

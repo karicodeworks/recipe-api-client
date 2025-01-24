@@ -4,6 +4,8 @@ import { RegisterForm, LoginForm } from '../components'
 const LoginPage = () => {
   const [sigUpForm, setSignUpForm] = useState(false)
 
+  const formToggle = () => setSignUpForm(false)
+
   return (
     <div className="h-full pt-10 lg:w-4/12 sm:w-4/5 lg:m-auto sm:m-auto">
       <div className="w-full flex flex-1 justify-between rounded-t">
@@ -20,7 +22,7 @@ const LoginPage = () => {
           Sign Up
         </button>
       </div>
-      {sigUpForm ? <RegisterForm /> : <LoginForm />}
+      {sigUpForm ? <RegisterForm formToggle={formToggle} /> : <LoginForm />}
     </div>
   )
 }
