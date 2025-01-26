@@ -1,15 +1,10 @@
-import { Route, useNavigate } from 'react-router-dom'
+import { Outlet, Navigate } from 'react-router-dom'
 import { useGlobalContext } from '../context'
 
-const PrivateRoute = ({ children, ...rest }) => {
+const ProtectedRoutes = () => {
   const { user } = useGlobalContext()
 
-  return (
-    <Route
-      {...rest}
-      render={() => (user ? children : useNavigate('/login'))}
-    ></Route>
-  )
+  return user ? <Outlet /> : <Navigate to="/login" />
 }
 
-export default PrivateRoute
+export default ProtectedRoutes

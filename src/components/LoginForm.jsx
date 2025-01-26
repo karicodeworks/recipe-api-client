@@ -1,14 +1,16 @@
 import { useState } from 'react'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
+import { useGlobalContext } from '../context'
+import useLocalState from '../utils/LocalState'
 
 const LoginForm = () => {
+  const { saveUser } = useGlobalContext()
   const [values, setValues] = useState({
     email: '',
     password: '',
   })
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState(false)
+  const { loading, setLoading, alert, showAlert, hideAlert } = useLocalState()
   const navigate = useNavigate()
 
   const handleChange = (e) => {
@@ -17,6 +19,8 @@ const LoginForm = () => {
 
   const handleLogin = async (e) => {
     e.preventDefault()
+
+    hideAlert()
     setLoading(true)
     const { email, password } = values
     const userCreds = { email, password }
@@ -24,17 +28,24 @@ const LoginForm = () => {
     try {
       const { data } = await axios.post('/api/v1/auth/login', userCreds)
       setValues({ email: '', password: '' })
-      alert(`Welcome, ${data.user.name}. Redirecting to dashboard...`)
+      showAlert({
+        text: `Welcome, ${data.user.name}. Redirecting to dashboard...`,
+        type: 'success',
+      })
       setLoading(false)
+      saveUser(data.user)
       navigate('/dashboard')
     } catch (error) {
-      setError(error.response.data.message)
+      showAlert({ text: error.response.data.message })
       setLoading(false)
     }
   }
 
   return (
     <>
+      {alert.show && (
+        <div className={`alert alert-${alert.type}`}>{alert.text}</div>
+      )}
       <form
         onSubmit={handleLogin}
         autoComplete="off"
@@ -74,14 +85,14 @@ const LoginForm = () => {
             placeholder="******************"
             onChange={handleChange}
           />
-          {error && <p className="text-red-500 text-xs italic">{error}</p>}
         </div>
         <div className="flex items-center justify-between">
           <button
             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
             type="submit"
+            disabled={loading}
           >
-            {loading ? 'loading' : 'Sign In'}
+            {loading ? 'Loading...' : 'Sign In'}
           </button>
           <a
             className="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800"

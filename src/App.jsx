@@ -1,18 +1,27 @@
 import { Routes, Route } from 'react-router-dom'
-import NavBar from './components/NavBar'
-import HomePage from './pages/HomePage'
-import LoginPage from './pages/LoginPage'
-import DashboardPage from './pages/DashboardPage'
-import PrivateRoute from './utils/ProtectedRoutes'
+import ProtectedRoutes from './utils/ProtectedRoutes'
+import { HomePage, LoginPage, DashboardPage } from './pages'
+import { NavBar } from './components'
+import { useGlobalContext } from './context'
 
 function App() {
+  const { isLoading } = useGlobalContext()
+  if (isLoading) {
+    return (
+      <section className="page page-center">
+        <div className="loading"></div>
+      </section>
+    )
+  }
   return (
     <div className="w-screen h-screen">
       <NavBar />
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<LoginPage />} />
-        <PrivateRoute path="/dashboard" element={<DashboardPage />} />
+        <Route element={<ProtectedRoutes />}>
+          <Route path="/dashboard" element={<DashboardPage />} />
+        </Route>
         <Route path="*" element={<h1>Page Not Found</h1>} />
       </Routes>
     </div>
