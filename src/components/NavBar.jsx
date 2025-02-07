@@ -1,26 +1,26 @@
 import { Link } from 'react-router-dom'
 import { useGlobalContext } from '../context'
+import UserNav from './UserNav'
 
 const NavBar = () => {
   const { user, logoutUser } = useGlobalContext()
   return (
-    <div className="sticky top-0 flex justify-between items-center py-2 bg-gray-800 p-2 text-white px-24">
-      <div className="my-custom-font font-extrabold text-3xl">
-        <Link to="/">Recipes</Link>
+    <div className="nav-container">
+      <div className="logo">
+        <Link to="/">Chef to Chef</Link>
       </div>
       {user ? (
-        <>
-          <p>Welcome, {user.name}</p>
-          <button className="border rounded p-1" onClick={logoutUser}>
-            logout
+        <div className="user-welcome">
+          <UserNav />
+          <p>Hello, {user.name}</p>
+          <button className="logout-btn" onClick={logoutUser}>
+            Logout
           </button>
-        </>
+        </div>
       ) : (
-        <nav className="flex w-max gap-10 text-sm items-center">
-          <Link to="/login">
-            <button className="border rounded p-1">Login/Register</button>
-          </Link>
-        </nav>
+        <button className="login-btn">
+          <Link to="/login">Login/Register</Link>
+        </button>
       )}
     </div>
   )

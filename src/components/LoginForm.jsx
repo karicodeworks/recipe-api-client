@@ -43,24 +43,14 @@ const LoginForm = () => {
 
   return (
     <>
-      {alert.show && (
-        <div className={`alert alert-${alert.type}`}>{alert.text}</div>
-      )}
-      <form
-        onSubmit={handleLogin}
-        autoComplete="off"
-        className="bg-gray-300 shadow-md rounded-b px-8 pt-6 pb-8"
-      >
-        <h1 className="font-bold text-2xl text-center mb-4">Login In</h1>
-        <div className="mb-4">
-          <label
-            className="block text-gray-700 text-sm font-bold mb-2"
-            htmlFor="email"
-          >
-            User Email
-          </label>
+      <form onSubmit={handleLogin} autoComplete="off" className="form">
+        {alert.show && (
+          <div className={`alert alert-${alert.type}`}>{alert.text}</div>
+        )}
+        <h1>Login In</h1>
+        <div className="form-field">
+          <label htmlFor="email">User Email</label>
           <input
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             id="email"
             name="email"
             value={values.email}
@@ -69,15 +59,9 @@ const LoginForm = () => {
             onChange={handleChange}
           />
         </div>
-        <div className="mb-6">
-          <label
-            className="block text-gray-700 text-sm font-bold mb-2"
-            htmlFor="password"
-          >
-            Password
-          </label>
+        <div className="form-field">
+          <label htmlFor="password">Password</label>
           <input
-            className="shadow appearance-none border border-red-500 rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
             id="password"
             name="password"
             value={values.password}
@@ -86,20 +70,11 @@ const LoginForm = () => {
             onChange={handleChange}
           />
         </div>
-        <div className="flex items-center justify-between">
-          <button
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-            type="submit"
-            disabled={loading}
-          >
+        <div className="form-buttons">
+          <button type="submit" disabled={loading}>
             {loading ? 'Loading...' : 'Sign In'}
           </button>
-          <a
-            className="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800"
-            href="#"
-          >
-            Forgot Password?
-          </a>
+          <a>Forgot Password?</a>
         </div>
       </form>
     </>
